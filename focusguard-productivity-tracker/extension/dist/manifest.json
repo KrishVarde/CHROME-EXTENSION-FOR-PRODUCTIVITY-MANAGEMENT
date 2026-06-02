@@ -1,0 +1,43 @@
+{
+  "manifest_version": 3,
+  "name": "FocusGuard – Productivity Tracker",
+  "version": "1.0.0",
+  "description": "Track time spent on websites and block distractions.",
+  "permissions": [
+    "tabs",
+    "storage",
+    "alarms",
+    "webNavigation",
+    "declarativeNetRequest",
+    "notifications"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "index.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["blocked.html"],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}

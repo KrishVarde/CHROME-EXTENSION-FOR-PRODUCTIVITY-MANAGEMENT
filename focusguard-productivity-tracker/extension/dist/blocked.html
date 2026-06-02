@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Site Blocked – FocusGuard</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&display=swap');
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0a0a0f;
+      --surface: #12121a;
+      --border: #1e1e2e;
+      --accent: #ff4d6d;
+      --accent2: #ff8fa3;
+      --text: #e2e8f0;
+      --muted: #64748b;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .bg-grid {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,77,109,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,77,109,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .glow {
+      position: fixed;
+      width: 600px;
+      height: 600px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255,77,109,0.08) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+    }
+
+    .card {
+      position: relative;
+      z-index: 1;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 48px;
+      max-width: 480px;
+      width: 90%;
+      text-align: center;
+      box-shadow: 0 0 0 1px rgba(255,77,109,0.1), 0 40px 80px rgba(0,0,0,0.5);
+      animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px) scale(0.95); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .shield {
+      width: 80px;
+      height: 80px;
+      margin: 0 auto 24px;
+      background: linear-gradient(135deg, rgba(255,77,109,0.15), rgba(255,77,109,0.05));
+      border: 1px solid rgba(255,77,109,0.3);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      animation: pulse 2s ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255,77,109,0.3); }
+      50% { box-shadow: 0 0 0 12px rgba(255,77,109,0); }
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+      color: #fff;
+    }
+
+    .domain {
+      font-size: 16px;
+      color: var(--accent);
+      font-weight: 600;
+      margin-bottom: 16px;
+      padding: 6px 14px;
+      background: rgba(255,77,109,0.1);
+      border: 1px solid rgba(255,77,109,0.2);
+      border-radius: 20px;
+      display: inline-block;
+    }
+
+    p {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin-bottom: 32px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    button {
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      border: none;
+    }
+
+    .btn-back {
+      background: linear-gradient(135deg, #ff4d6d, #c9184a);
+      color: white;
+    }
+    .btn-back:hover { transform: translateY(-1px); box-shadow: 0 8px 20px rgba(255,77,109,0.4); }
+
+    .btn-proceed {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--muted);
+    }
+    .btn-proceed:hover { border-color: var(--muted); color: var(--text); }
+
+    .quote {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="glow"></div>
+
+  <div class="card">
+    <div class="shield">🛡️</div>
+    <h1>Blocked by FocusGuard</h1>
+    <div class="domain" id="siteName">this site</div>
+    <p>This website is on your block list.<br>Stay focused — your future self will thank you.</p>
+    <div class="actions">
+      <button class="btn-back" onclick="history.back()">← Go Back</button>
+      <button class="btn-proceed" onclick="proceed()">Proceed Anyway</button>
+    </div>
+    <div class="quote" id="quote"></div>
+  </div>
+
+  <script>
+    const params = new URLSearchParams(location.search);
+    const site = params.get("site") || "this site";
+    document.getElementById("siteName").textContent = site;
+
+    const quotes = [
+      '"The key is not to prioritize what's on your schedule, but to schedule your priorities." – Stephen Covey',
+      '"You will never find time for anything. If you want time, you must make it." – Charles Bruxton',
+      '"Focus is saying no to 1,000 good ideas." – Steve Jobs',
+      '"The secret of getting ahead is getting started." – Mark Twain',
+      '"Deep work is the ability to focus without distraction." – Cal Newport',
+    ];
+    document.getElementById("quote").textContent =
+      quotes[Math.floor(Math.random() * quotes.length)];
+
+    function proceed() {
+      if (confirm("Are you sure you want to visit a blocked site?")) {
+        const url = `https://${site}`;
+        location.href = url;
+      }
+    }
+  </script>
+</body>
+</html>
